@@ -1,0 +1,1 @@
+{"version":3,"file":"vue.js","sources":["../src/index.js"],"sourcesContent":["export const a = 100\r\nexport default { name: 'ts' }\r\n"],"names":["name"],"mappings":"mgBAAiB,cACF,CAAEA,KAAM,IAAK"}
