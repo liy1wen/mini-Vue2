@@ -16,14 +16,14 @@
         return {
           name: 'ts',
           age: 18,
-          teacher: {
-            name: 'jkl',
-            age: 20
-          }
+          sports: ['basketball', 'football'],
         }
       }
     })
-    console.log(vm)
+    vm.sports.push({ name: 'tennis' })
+    vm.sports.unshift('badminton')
+    vm.sports.splice(0, 1, 'ping pong')
+    console.log(vm);
   </script>
 </body>
 
