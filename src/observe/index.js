@@ -1,6 +1,7 @@
 import { newArrayProto } from './array'
+import { isObject } from '../utils/index'
 export function observe(data) {
-  if (typeof data !== 'object' && data !== 'null') return // data不是对象就不用劫持
+  if (!isObject(data)) return // data不是对象就不用劫持
   // data.__ob__ instanceof Observe 为true表示data.__ob__为Observe实例，即已经被观测过了，不需要再观测了
   if (data.__ob__ instanceof Observe) {
     return data.__ob__

@@ -4,7 +4,7 @@ import serve from 'rollup-plugin-serve'
 import livereload from 'rollup-plugin-livereload'
 
 export default {
-  input: './src/index.js', // 入口文件
+  input: './src/instance/index.js', // 入口文件
   output: {
     format: 'umd',
     file: 'dist/vue.js', // 打包后输出文件

@@ -9,21 +9,25 @@
 </head>
 
 <body>
+  <div id="app">
+    <div class="person">
+      <span class="person-name">{{name}}</span>
+      <span class="person-age">{{age}}</span>
+    </div>
+  </div>
   <script src="../dist/vue.js"></script>
   <script>
     let vm = new Vue({
+      el: '#app',
       data() {
         return {
           name: 'ts',
           age: 18,
           sports: ['basketball', 'football'],
         }
-      }
+      },
     })
-    vm.sports.push({ name: 'tennis' })
-    vm.sports.unshift('badminton')
-    vm.sports.splice(0, 1, 'ping pong')
-    console.log(vm);
+    console.log(vm.age);
   </script>
 </body>
 
