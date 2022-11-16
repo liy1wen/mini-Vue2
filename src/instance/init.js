@@ -1,5 +1,6 @@
 import { initState } from './state'
 import { query } from '../utils/index'
+import { compileToFunctions } from '../compiler/index'
 // 给Vue原型添加_init方法
 export const initMixin = (Vue) => {
   Vue.prototype._init = function (options) {
@@ -35,7 +36,9 @@ export const initMixin = (Vue) => {
         // 没有template属性，采用el.outerHTML
         template = el.outerHTML
       }
-      console.log(template, 'template')
+      if (template) {
+        options.render = compileToFunctions(template)
+      }
     }
   }
 }
