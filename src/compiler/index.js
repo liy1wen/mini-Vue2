@@ -11,7 +11,58 @@ export const compileToFunctions = (template) => {
   const ast = parseHTML(template)
 }
 
+let stack = [],
+  root,
+  currentParent
 function parseHTML(html) {
+  // 创建AST结构元素
+  function createASTElement(tag, attrs) {
+    return {
+      type: 1, // 1表示元素， 3表示普通文本
+      tag,
+      attrsList: attrs,
+      parent: null,
+      children: []
+    }
+  }
+  // 开始标签处理转化ast语法树
+  function start(tag, attrs) {
+    // 生产AST结构的元素
+    let node = createASTElement(tag, attrs)
+    // 没有根节点说明当前元素就是根节点，将当前元素赋值给root
+    if (!root) {
+      root = node
+    }
+    // 如果有父元素，将父元素关联到当前元素的父元素
+    if (currentParent) {
+      node.parent = currentParent
+      // 给父元素的children赋值node
+      currentParent.children.push(node)
+    }
+    // 将元素入栈
+    stack.push(node)
+    // 将当前元素作为父元素
+    currentParent = node
+  }
+  // 结束标签处理转化ast语法树
+  function end(tag) {
+    // 将stack最后一个元素出栈
+    stack.pop()
+    // 将栈中最后一个元素作为父元素
+    currentParent = stack[stack.length - 1]
+  }
+  // 文本处理转化ast语法树
+  function charts(text) {
+    // 文本去空
+    text = text.replace(/\s/g, '')
+    // 如果是文本就直接放在父元素的children里面
+    text &&
+      currentParent.children.push({
+        type: 3,
+        text,
+        parent: currentParent
+      })
+  }
   while (html) {
     let textEnd = html.indexOf('<')
     // 表示的是标签开始位置或者结束位置
@@ -19,11 +70,13 @@ function parseHTML(html) {
       // 如果是标签开始位置
       const startTagMatch = parseStartTag()
       if (startTagMatch) {
+        start(startTagMatch.tagName, startTagMatch.attrs)
         continue
       }
       // 如果是标签结束位置
       const endTagMatch = html.match(endTag)
       if (endTagMatch) {
+        end(endTagMatch[1])
         advance(endTagMatch[0].length)
         continue
       }
@@ -38,10 +91,11 @@ function parseHTML(html) {
       text = html
     }
     if (text) {
+      charts(text)
       advance(text.length)
     }
   }
-  console.log(html)
+  console.log(root)
   // 截取掉被匹配到的模板部分
   function advance(n) {
     html = html.substring(n)
