@@ -26,6 +26,7 @@ export const initMixin = (Vue) => {
       console.warn(`Do not mount Vue to <html> or <body> - mount to normal elements instead.`)
       return this
     }
+    // 优先级 render > template > el
     // 没有render函数
     if (!options.render) {
       let template
